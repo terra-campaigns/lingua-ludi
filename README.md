@@ -1,23 +1,21 @@
 # Lingua Ludi
 
-A setting-agnostic, language-agnostic tabletop RPG harness for acquiring European languages through structured gameplay, with staged Tier 1 lore export back to parent campaign universes.
+A zero-Python, setting-agnostic, language-agnostic tabletop RPG skill and subagent persona kit for acquiring European languages through structured gameplay, run inside host campaign repositories with staged Tier 1 lore export.
 
 [![Code Licence: MIT](https://img.shields.io/badge/Code_Licence-MIT-yellow.svg)](LICENSE)
 [![Content Licence: CC BY 4.0](https://img.shields.io/badge/Content_Licence-CC_BY_4.0-lightgrey.svg)](LICENSE)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 
-> **Status:** Specification Draft (`Spec 0.1.0` / `Interface Contract 0.1.0`).
-> Core architecture is defined in [docs/designs/001_lingua_ludi_core_architecture.md](docs/designs/001_lingua_ludi_core_architecture.md) and awaits Elephant-Goldfish Model (EGM) review and human sign-off before production code implementation begins.
+> **Status:** Specification Draft (`Spec 0.2.0`).
+> Core architecture is defined in [docs/designs/001_lingua_ludi_core_architecture.md](docs/designs/001_lingua_ludi_core_architecture.md) and awaits Elephant-Goldfish Model (EGM) review and human sign-off before skills, personas, and language packs are authored.
 
 ---
 
 ## Overview
 
-Lingua Ludi combines the deterministic, transport-neutral engine discipline of [TOME](https://github.com/efsalvarenga/tome) with the tiered canon architecture of [Oude Mechanismen](https://github.com/terra-campaigns/oude-mechanismen).
+Lingua Ludi pairs lightweight, Markdown-first solo tabletop play (player-rolled 24XX micro-scenes with readable `state.md` and `log.md` files) with [Oude Mechanismen](https://github.com/terra-campaigns/oude-mechanismen)'s tiered campaign canon architecture.
 
-It is a plain-text, agent-driven harness rather than a deployed web application.
-Players interact through zoomed-in 24XX-style micro-scenes in a target European language while a silent post-turn Shadow Coach logs errors and feeds spaced-retrieval targets back into future scenes.
-At the end of a session, canon-altering outcomes can be distilled, translated into the parent universe's canonical language, checked against a setting glossary, and staged for human-reviewed Tier 1 promotion without ever mutating the parent repository directly.
+Rather than running as a monolithic GM-plus-tutor chat prompt or a heavy software runtime, Lingua Ludi is installed alongside `oude-mechanismen` and invoked directly inside any host campaign repository.
+Distinct subagent personas provide a genuine table feel: the GM runs the scene in the main session, a persistent **Wingman** offers friendly companion scaffolding and `OOC:` help, selective **Spotlight NPCs** speak with independent voices grounded in Tier 1 notes, an asynchronous **Shadow Coach** silently updates a Markdown spaced-retrieval ledger (`ledger.md`), and a fresh session-end **Promoter** stages clean canonical-language Tier 1 lore proposals without ever modifying published campaign notes.
 
 ---
 
@@ -25,48 +23,49 @@ At the end of a session, canon-altering outcomes can be distilled, translated in
 
 ```text
 ┌──────────────────────────────────────────────────────────────────────┐
-│  1. Engine / Harness (Generic, Zero Setting or Language Hardcoding)  │
-│     • 24XX risk-resolution state machine (seeded RNG, pure Python)   │
-│     • Three-pass agent contracts (Referee, Shadow Coach, Promoter)   │
-│     • Spaced-retrieval selector & Tier 1 staging validator           │
+│  1. Lingua Ludi Kit (Generic, Zero Setting or Language Hardcoding)   │
+│     • Skills: lingua-init, lingua-play, lingua-promote               │
+│     • Subagent Personas: Wingman, Spotlight NPC, Coach, Promoter     │
+│     • Plain Markdown & YAML campaign/export templates                │
 ├─────────────────────────────────┬────────────────────────────────────┤
-│  2. Language Pack               │  3. Setting Cartridge (Read-Only)  │
-│     • ISO language code         │     • Parent vault catalog.json    │
-│     • CEFR profiles (A2–C1)     │       (oude-mechanismen Tier 1)    │
-│     • Coach error taxonomy      │     • Canonical language metadata  │
-│     • Register & scaffolding    │     • Per-language term glossary   │
+│  2. Language Packs              │  3. Host Campaign Repo (Vault)     │
+│     • ISO / BCP-47 code         │     • Read-only Tier 1 canon       │
+│     • CEFR profiles (A2–C1)     │       (.agents/context/catalog.json│
+│     • Coach error taxonomy      │       & .agents/AGENTS.md)         │
+│     • Register & scaffolding    │     • .agents/lingua-ludi/glossary │
+│       (first pack: Dutch `nl`)  │     • _gm-materials/lingua-ludi/   │
 └─────────────────────────────────┴────────────────────────────────────┘
 ```
 
 ---
 
-## Three-Pass Turn & Session Loop
+## Multi-Persona Turn & Session Loop
 
 ```text
-  player turn (target language)
+  player turn (target language, player-rolled 24XX dice on risky actions)
         │
-        ├──► [Pass 1: Referee] (in-character, target language, CEFR-bounded)
-        │         • optional Companion only when toggled on or addressed
-        │         • deterministic 24XX roll when action carries risk (1–2 / 3–4 / 5+)
-        │         • emits scene outcome + state delta
+        ├──► [GM — Main Session] (in-character, target language, CEFR-bounded)
+        │         • handles scene narration, stakes, state.md & log.md
+        │         • invokes persistent [Wingman] on OOC:/request (or active beats)
+        │         • invokes [Spotlight NPC] (max 1–2/scene) when engaging a named NPC
         │
-        └──► [Pass 2: Shadow Coach] (out-of-character, silent post-turn)
-                  • analyses learner utterance only (never breaks fiction)
-                  • records structured corrections, idioms, and error tags
-                  • updates spaced-retrieval ledger for future Referee prompts
+        └──► [Shadow Coach — Async Background Subagent] (silent, non-blocking)
+                  • analyses player's target-language utterance only
+                  • sole writer of _gm-materials/lingua-ludi/<campaign>/ledger.md
+                  • feeds 3–5 due spaced-retrieval targets into future scenes
 
   session end
-        └──► [Pass 3: Promoter] (distil + translate + glossary check)
-                  • converts canon-altering outcomes into parent canonical language
-                  • links affected Tier 1 catalog paths and SHAs
-                  • writes spoiler-safe proposal bundle to exports/ (staging only)
+        └──► [Promoter — Fresh Subagent] (distil + translate + glossary/SHA check)
+                  • reads narrative records only (never ledger.md or coaching notes)
+                  • translates canon-altering outcomes into vault canonical language
+                  • stages spoiler-safe proposal under _gm-materials/.../exports/
 ```
 
 ---
 
 ## Project Governance & Development
 
-Development follows the **Elephant-Goldfish Model (EGM)** and strict Test-Driven Development (TDD).
+Development follows the **Elephant-Goldfish Model (EGM)**.
 See [AGENTS.md](AGENTS.md) for architectural boundaries, specification gates, and branch protection rules.
 See [HANDOFF.md](HANDOFF.md) for current milestone context and continuation steps.
 
@@ -76,7 +75,7 @@ See [HANDOFF.md](HANDOFF.md) for current milestone context and continuation step
 
 Lingua Ludi uses a dual-licence structure; see [LICENSE](LICENSE) for full terms:
 
-- **Source Code & Software:** MIT Licence.
-- **Game Mechanics, Language Packs, Prompt Contracts & Documentation:** Creative Commons Attribution 4.0 International (CC BY 4.0).
+- **Source Code & Software (if added later):** MIT Licence.
+- **Game Mechanics, Skills, Personas, Language Packs & Documentation:** Creative Commons Attribution 4.0 International (CC BY 4.0).
 
 24XX rules are CC BY 4.0 Jason Tocci (<https://jasontocci.itch.io/24xx>).
