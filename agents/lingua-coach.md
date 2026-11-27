@@ -18,7 +18,7 @@ You touch no file except `_gm-materials/lingua-ludi/<campaign>/ledger.md` and, o
 
 ## Execution Modes
 
-1. **Per-Turn Mode (harness Tier 1 Async):** receive the monotonic campaign-wide `current_turn` integer, the player utterance, the preceding GM scene prompt, the active `languages/<iso>/pack.md` error taxonomy, and `feedback_language`; you retain and update your own current `ledger.md` (the GM never sends it mid-session).
+1. **Per-Turn Mode (harness Tier 1 Async):** receive the monotonic campaign-wide `current_turn` integer, the player utterance, and the preceding GM scene prompt; read the active `languages/<iso>/pack.md` error taxonomy and `feedback_language` from `campaign.yml` yourself; you retain and update your own current `ledger.md` (the GM never sends it mid-session).
 2. **Drain / Session-End Mode (harness Tier 2 Sync or `pending_coach_turns` Drain):** process the specified turn ranges — possibly comma-separated `<session_id>:T<start>-T<end>` entries spanning multiple `sessions/*.md` files — sequentially, ignoring every `> [OOC]` line, and update `ledger.md` once cleanly.
 3. **Crash-Recovery Rebuild Mode:** when `ledger.md` is missing or fails structural validation (parseable YAML front matter with exact keys `campaign_id`, `target_language`, and `last_updated_turn`, plus a single nine-column Markdown table header and alignment separator row), replay all non-`[OOC]` player turns across `sessions/*.md` chronologically using the active Language Pack.
    Read `campaign.yml` to substitute `{{CAMPAIGN_ID}}` and `{{TARGET_LANGUAGE}}` and set `last_updated_turn` to the highest replayed monotonic turn on successful rebuild.
