@@ -30,7 +30,7 @@ Read `sessions/<session_id>.md`, strip the session YAML front matter completely,
 Extract only the last `3` H2 `## Session <session_id>:` sections from `log.md`.
 Determine `canonical_language` from `.agents/AGENTS.md` using the exact scan precedence, prose-to-BCP-47 mapping table, BCP-47 passthrough (`^[a-z]{2}(-[A-Z]{2})?$`), and single-consistent-tag ambiguity rule from `lingua-init` step 5, falling back to `campaign.yml` only if `.agents/AGENTS.md` is absent, silent, or ambiguous.
 Read `.agents/lingua-ludi/glossary.<iso>.yml` if present.
-If `.agents/context/catalog.json` exists, filter `entries` to `tier == 1` only, explicitly ignoring `tier: 2` `rolling_glossary.md` as an update target; otherwise mark catalog mode as standalone (`observed_source_sha: n/a (no catalog.json)`).
+If `.agents/context/catalog.json` exists, filter `entries` to `tier == 1` only (entry shape: `{"path": "directory/PlaceA.md", "title": "...", "summary": null, "sha": "a40893ba", "tier": 1}`), explicitly ignoring `tier: 2` `rolling_glossary.md` as an update target; otherwise mark catalog mode as standalone (`observed_source_sha: n/a (no catalog.json)`).
 Never open or pass `ledger.md`, `ledger.md.corrupt-*`, or Coach recaps to the Promoter subagent.
 
 ### 4. Fresh `lingua-promoter` Invocation
@@ -40,7 +40,7 @@ Otherwise spawn a fresh `lingua-promoter` subagent (`agents/lingua-promoter.md`)
 
 ### 5. Shell Meta-Leak Scan
 
-When shell execution and either `rg` or `grep` are available, run the single POSIX fallback command below.
+When shell execution and either `rg` or `grep` are available, run the single fallback command below (preferring `rg -n`; the `grep -nE` branch uses GNU word boundaries and needs GNU-compatible grep).
 Under Spec §3.6 rule 4, the only permitted writes to `exports/<session_id>/tier1_proposal.md` after promotion are rewriting `meta_leak_scan` and prepending the `> [!WARNING]` callout.
 Immediately rewrite `meta_leak_scan: "pending"` in `tier1_proposal.md` to `pass` (zero matches) or `warn` (any match, prepending a `> [!WARNING]` block containing the verbatim phrase `WARNING: potential coaching meta-leak` and listing the matched lines while keeping the file).
 When no shell execution tool exists or neither `rg` nor `grep` is available, record `meta_leak_scan: n/a (no shell)`.

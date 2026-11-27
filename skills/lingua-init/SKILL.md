@@ -21,7 +21,7 @@ Abort with an explicit missing-path error if any check fails.
 
 ### 2. Intake & Parameters
 
-Read positional arguments `campaign_id`, `target_language` (`<iso>`), and `cefr_level` (`A2`–`C1`) matching the argument hint, prompting interactively if omitted.
+Read positional arguments `campaign_id` (`[campaign-slug]`), `target_language` (`[target-iso]`), and `cefr_level` (`[cefr]`, a CEFR level `A2`–`C1` per the [Common European Framework of Reference](https://www.coe.int/en/web/common-european-framework-reference-languages)), prompting interactively if omitted.
 Prompt interactively for `feedback_language`, `wingman.policy` (`on_request` or `active`, defaulting to `on_request` if left blank and validating against those two values), `character_name`, `character_concept`, and `start_location`.
 Apply defaults `wingman.enabled: true`, `wingman.name: "Companion A"`, `wingman.role: "Local fixer and colleague"`, `max_active_npcs: 2`, and `max_retrieval_targets: 4`.
 Validate `campaign_id` against `^[a-z0-9_-]+$`.
@@ -46,7 +46,7 @@ Read `.agents/AGENTS.md` if present and evaluate categories `(1)` → `(2)` → 
 Category `(1)`: an explicit `canonical_language:` key or `canonical language` heading.
 Category `(2)`: a writing-style language rule or heading matching `British English`, `UK English`, `American English`, `US English`, or `write in` / `use <Language>`.
 Category `(3)`: a chapter or session output language heading or line.
-Map recognised prose names (`British English` or `UK English` → `en-GB`, `American English` or `US English` → `en-US`, `English` → `en`, `German` → `de`, `French` → `fr`, `Spanish` → `es`, `Portuguese` → `pt`, `Italian` → `it`), or preserve an explicit BCP-47 tag matching `^[a-z]{2}(-[A-Z]{2})?$` case-sensitively, which also covers tags such as `nl` directly.
+Map recognised prose names (`British English` or `UK English` → `en-GB`, `American English` or `US English` → `en-US`, `English` → `en`, `German` → `de`, `French` → `fr`, `Spanish` → `es`, `Portuguese` → `pt`, `Italian` → `it`), or preserve an explicit BCP-47 tag matching `^[a-z]{2}(-[A-Z]{2})?$` case-sensitively — the passthrough resolves tags such as `nl` directly, since this kit forbids naming concrete target languages in `skills/`.
 Advance when a category yields zero recognised tags and stop at the first category yielding one or more recognised tags.
 A single consistent tag wins; two or more distinct tags inside that category immediately mark `.agents/AGENTS.md` ambiguous.
 If `.agents/AGENTS.md` is absent, silent across all three categories, or ambiguous within the first non-empty category, prompt interactively here for the fallback `canonical_language` and record the resolved tag in `campaign.yml`.

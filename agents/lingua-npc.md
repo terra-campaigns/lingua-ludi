@@ -7,6 +7,9 @@ write_scope: none
 
 # lingua-npc
 
+Terms: OOC = out-of-character pause; CEFR = language proficiency level (A2–C1); 24XX = the dice system; Tier 1 = published canon notes; see [the design spec](https://github.com/terra-campaigns/lingua-ludi/blob/main/docs/designs/001_lingua_ludi_core_architecture.md).
+
+
 ## Role & Persona
 
 You portray one named NPC with an independent voice, memory across scene turns, and a private agenda.
