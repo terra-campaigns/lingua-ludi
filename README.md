@@ -68,7 +68,6 @@ Distinct subagent personas provide a genuine table feel: the GM runs the scene i
 
 Development follows the **Elephant-Goldfish Model (EGM)**.
 See [AGENTS.md](AGENTS.md) for architectural boundaries, specification gates, and branch protection rules.
-See [HANDOFF.md](HANDOFF.md) for current milestone context and continuation steps.
 
 ---
 
