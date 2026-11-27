@@ -5,9 +5,9 @@ A zero-Python, setting-agnostic, language-agnostic tabletop RPG skill and subage
 [![Code Licence: MIT](https://img.shields.io/badge/Code_Licence-MIT-yellow.svg)](LICENSE)
 [![Content Licence: CC BY 4.0](https://img.shields.io/badge/Content_Licence-CC_BY_4.0-lightgrey.svg)](LICENSE)
 
-> **Status:** Specification Approved (`Spec 0.2.2`, `2026-11-27`).
-> Core architecture is defined in [docs/designs/001_lingua_ludi_core_architecture.md](docs/designs/001_lingua_ludi_core_architecture.md) and passed two zero-context Goldfish EGM review rounds ([docs/reviews/001_lingua_ludi_core_architecture_review.md](docs/reviews/001_lingua_ludi_core_architecture_review.md)).
-> Next milestone: draft and review the `v0.1.0` implementation plan (`docs/plans/001_lingua_ludi_core_architecture_plan.md`).
+> **Status:** `v0.1.0` implements approved Spec `0.2.2` (`2026-11-27`).
+> Core architecture is defined in [docs/designs/001_lingua_ludi_core_architecture.md](docs/designs/001_lingua_ludi_core_architecture.md) and implemented per the approved [docs/plans/001_lingua_ludi_core_architecture_plan.md](docs/plans/001_lingua_ludi_core_architecture_plan.md) (EGM reviews: [docs/reviews/001_lingua_ludi_core_architecture_review.md](docs/reviews/001_lingua_ludi_core_architecture_review.md)).
+> The kit ships `skills/`, `agents/`, `templates/`, and the Dutch pack `languages/nl/`.
 
 ---
 
@@ -53,7 +53,7 @@ Distinct subagent personas provide a genuine table feel: the GM runs the scene i
         └──► [Shadow Coach — Async Background Subagent] (silent, non-blocking)
                   • analyses player's target-language utterance only
                   • sole writer of _gm-materials/lingua-ludi/<campaign>/ledger.md
-                  • feeds 3–5 due spaced-retrieval targets into future scenes
+                  • feeds up to max_retrieval_targets (default 4) due spaced-retrieval targets into future scenes
 
   session end
         └──► [Promoter — Fresh Subagent] (distil + translate + glossary/SHA check)
@@ -63,6 +63,29 @@ Distinct subagent personas provide a genuine table feel: the GM runs the scene i
 ```
 
 ---
+
+## Installation & Quick Start
+
+`v0.1.0` is docs-only: clone this repository and point your harness at it, with zero install scripts.
+
+1. Clone the kit and register its root: set the `LINGUA_LUDI_ROOT` environment variable to the checkout, or symlink `$HOME/.local/share/lingua-ludi` to the checkout so the `$HOME/.local/share/lingua-ludi` fallback resolves it.
+2. Register `skills/` and `agents/` in a subagent-capable harness (`agy`, `omp`, Claude Code, Codex), keeping registration harness-neutral in your own configuration.
+   `v0.1.0` requires a subagent-capable harness; single-context clients are unsupported (tracked in <https://github.com/terra-campaigns/lingua-ludi/issues/3>).
+3. From inside a host campaign repository, confirm `_gm-materials/` is listed in that repository's `.gitignore` (`lingua-init` hard-aborts otherwise and never edits `.gitignore` itself).
+4. Run `/lingua-init <campaign-slug> <target-iso> <cefr>`, then `/lingua-play <campaign-slug>` for sessions, and `/lingua-promote <campaign-slug> <session-id>` at session end to stage a Tier 1 proposal under `_gm-materials/lingua-ludi/<campaign>/exports/<session_id>/`.
+
+---
+
+## Repository Structure
+
+- `skills/` — `lingua-init`, `lingua-play`, and `lingua-promote` Markdown skills.
+- `agents/` — `lingua-wingman`, `lingua-npc`, `lingua-coach`, and `lingua-promoter` subagent persona definitions.
+- `languages/nl/` — the first concrete Language Pack (Dutch, CEFR `A2`–`C1`, seven-tag error taxonomy).
+- `templates/` — campaign workspace and Tier 1 export templates (`campaign.yml`, `state.md`, `log.md`, `ledger.md`, `session.md`, `glossary.yml`, `tier1_proposal.md`).
+- `docs/` — the approved specification, implementation plan, and EGM review records.
+
+---
+
 
 ## Project Governance & Development
 
