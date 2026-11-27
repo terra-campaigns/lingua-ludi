@@ -1,0 +1,12 @@
+target_language: "{{TARGET_LANGUAGE}}"
+canonical_language: "{{CANONICAL_LANGUAGE}}"   # Descriptive metadata only; does not override .agents/AGENTS.md or campaign.yml
+terms: []
+# Example entries illustrating both policies and all four entry keys:
+# - canonical_term: "Term A"
+#   target_rendering: "Term A"
+#   policy: "keep_untranslated"        # keep_untranslated | preferred_translation
+#   related_catalog_path: "directory/PlaceA.md"
+# - canonical_term: "Place A"
+#   target_rendering: "Target-language rendering of Place A"
+#   policy: "preferred_translation"
+#   related_catalog_path: "directory/PlaceA.md"

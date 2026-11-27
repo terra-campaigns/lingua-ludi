@@ -1,0 +1,12 @@
+campaign_id: "{{CAMPAIGN_ID}}"
+target_language: "{{TARGET_LANGUAGE}}"
+feedback_language: "{{FEEDBACK_LANGUAGE}}"
+canonical_language: "{{CANONICAL_LANGUAGE}}"   # Fallback ONLY when host .agents/AGENTS.md is absent or silent
+cefr_level: "{{CEFR_LEVEL}}"                     # A2 | B1 | B2 | C1
+wingman:
+  enabled: true
+  name: "{{WINGMAN_NAME}}"
+  role: "{{WINGMAN_ROLE}}"
+  policy: "{{WINGMAN_POLICY}}"                   # on_request | active
+max_active_npcs: 2                               # 1..2
+max_retrieval_targets: 4                         # 0..5 (0 disables retrieval injection)
