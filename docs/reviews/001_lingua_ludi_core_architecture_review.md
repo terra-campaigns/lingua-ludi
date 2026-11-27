@@ -1,8 +1,9 @@
 # EGM Review Summary: Lingua Ludi Core Architecture (`001`)
 
 **Target Specification:** [001_lingua_ludi_core_architecture.md](../designs/001_lingua_ludi_core_architecture.md)
+**Target Implementation Plan:** [001_lingua_ludi_core_architecture_plan.md](../plans/001_lingua_ludi_core_architecture_plan.md)
 **Review Record Directory:** `docs/reviews/001_lingua_ludi_core_architecture_egm/`
-**Status:** Approved (`Spec 0.2.2` signed off by `efsalvarenga` on `2026-11-27` after two independent zero-context Goldfish EGM review rounds; `0` Blockers)
+**Status:** Approved (`Spec 0.2.2` approved on `2026-11-27`; Implementation Plan `001` approved on `2026-11-27` after three zero-context Stage 9 Goldfish rounds; `0` Blockers)
 
 ---
 
@@ -38,6 +39,20 @@
 
 ---
 
+## Stage 9 — Implementation Readiness Review (Plan `001`)
+
+* **Date:** 2026-11-27
+* **Execution Mode:** Three rounds of `3` isolated zero-context `omp` (`v18.22.0`) processes using `mistral/mistral-large-latest` (`--thinking=high`, `--no-session --no-context-files --no-rules --no-skills --no-extensions --no-tools`) across `egm-implementation-readiness`, `egm-codebase-details`, and `egm-style`.
+* **Round 1 Findings:** `4` deduplicated Blockers (`S9-B1`–`S9-B4`), `11` Majors (`S9-M1`–`S9-M11`), and `10` Nits (`S9-N1`–`S9-N10`).
+  All `25` findings were accepted and resolved in [001_lingua_ludi_core_architecture_plan.md](../plans/001_lingua_ludi_core_architecture_plan.md) (intermediate reports pruned).
+* **Round 2 Findings:** `1` deduplicated Blocker (`S9R2-B1`), `5` Majors (`S9R2-M1`–`S9R2-M5`), and `10` Nits (`S9R2-N1`–`S9R2-N10`).
+  `15` accepted fixes were applied, and `1` Nit (`S9R2-N8`: inert template HTML guidance comments and illustrative `d6` sub-bullet copy) was declined and bypassed (intermediate reports pruned).
+* **Round 3 Summary Record:** [implementation_readiness_r3_report.md](001_lingua_ludi_core_architecture_egm/implementation_readiness_r3_report.md) and resolved [stage9_r3_goldfish_review_report.md](001_lingua_ludi_core_architecture_egm/stage9_r3_goldfish_review_report.md).
+* **Round 3 Findings:** `0` Blockers (`egm-codebase-details` reported `0` Blockers and `0` Majors), `9` deduplicated Majors (`S9R3-M1`–`S9R3-M9`), and `18` Nits (`S9R3-N1`–`S9R3-N18`).
+  `24` accepted fixes were applied (`S9R3-M1`–`S9R3-M9`, `S9R3-N1`–`S9R3-N8`, `S9R3-N10`, `S9R3-N12`–`S9R3-N16`, `S9R3-N18`), and `3` Nits (`S9R3-N9`, `S9R3-N11`, `S9R3-N17`) were declined and bypassed before human sign-off (`Status: Approved`, `2026-11-27`).
+
+---
+
 ## Record Hygiene (`AGENTS.md` §2)
 
-Intermediate per-lens working reports under `docs/reviews/001_lingua_ludi_core_architecture_egm/` were pruned before commit in accordance with [AGENTS.md](../../AGENTS.md), retaining only the linked summary records (`consolidated_review_report.md`, `goldfish_review_report.md`, and `round2_consolidated_report.md`).
+Intermediate per-lens and superseded round reports under `docs/reviews/001_lingua_ludi_core_architecture_egm/` were pruned before commit in accordance with [AGENTS.md](../../AGENTS.md), retaining only the linked summary records (`consolidated_review_report.md`, `goldfish_review_report.md`, `round2_consolidated_report.md`, `implementation_readiness_r3_report.md`, and `stage9_r3_goldfish_review_report.md`).
