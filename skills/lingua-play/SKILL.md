@@ -23,14 +23,14 @@ Treat `.agents/context/catalog.json` as an index only: filter `tier == 1`, lazy-
 
 ### 2. Pre-Flight — Harness Capability Check
 
-Inspect the GM's own tools for (a) subagent spawn/delegate, (b) persistent messaging, (c) async completion notification/status/await.
+Inspect the GM's own tools for (a) subagent spawn/delegate, (b) persistent messaging, (c) async completion notification/status/await, and (d) terminate-with-acknowledgement for a running subagent.
 If (a) or (b) is absent or uncertain, refuse cleanly: `v0.1.0` requires a subagent-capable harness (https://github.com/terra-campaigns/lingua-ludi/issues/3); zero files modified.
-All three present → harness Tier 1 (async coach). Only (a)+(b) → harness Tier 2 (synchronous coach at close).
-
+All three of (a)-(c) present → harness Tier 1 (async coach). Only (a)+(b) → harness Tier 2 (synchronous coach at close).
+If (d) is absent or uncertain, a crashed-session takeover in step 1 is refused (see below); routine play is unaffected.
 ### 3. Pinned 5-Step Startup Sequence
 
 1. **`.active_session` concurrency guard:** if present, display its `session_id:` / `started_at:` YAML values, refuse auto-start, and ask the user to abort or confirm crashed-session takeover.
-   On confirmed takeover, first quiesce the crashed session's lingering subagents (terminate its wingman/NPC/coach) so only one coach can ever write `ledger.md`.
+   On confirmed takeover: quiesce the crashed session's lingering subagents (terminate its wingman/NPC/coach and await each termination ack — if (d) is unavailable, refuse the takeover and ask for manual cleanup), then reconcile the crashed session `<old_id>`: seed `pending_coach_turns` with its full turn range `<old_id>:T1-T<max N>`, set `ended_at` (UTC `YYYY-MM-DDTHH:MM:SSZ`) in `sessions/<old_id>.md`, and append its `## Session <old_id>: <Title>` summary to `log.md`, so no turns are lost and the orphaned session stays promotable.
    Then write `.active_session` (plain YAML keys `session_id:`, `started_at:`) with UTC `YYYY-MM-DD-NNN` (`NNN` = max existing per-day NNN + 1, else `001`) and UTC `YYYY-MM-DDTHH:MM:SSZ` (D11).
 2. **Health & drain check:** validate `ledger.md` structure (front matter keys `campaign_id`, `target_language`, `last_updated_turn` plus a single nine-column table) and read `pending_coach_turns`.
 3. **Recovery & drain before read:** if `ledger.md` is missing/malformed or `pending_coach_turns` is non-empty, spawn `lingua-coach` in rebuild/drain mode first — await its ack in harness Tier 1, or run it once synchronously in harness Tier 2.
@@ -53,11 +53,12 @@ Compact `lingua-wingman` via re-spawn with a 3–5 line scene recap after 20 exc
 
 **Persistence & coach dispatch:** increment the monotonic campaign-wide `current_turn` by 1, update `## Active Scene`, `## Character`, and `updated_at`, and append `### Turn <N>` using that same `N`.
 In harness Tier 1, dispatch `(turn_number, player_utterance, preceding_gm_prompt)` asynchronously to the single persistent `lingua-coach`; never read `ledger.md` mid-session.
+If the coach's context approaches saturation, drain its queue at a scene boundary and re-spawn a fresh `lingua-coach`, which reads the current `ledger.md` itself on spawn; never send `ledger.md` mid-session.
 On a mid-session coach `status: error`, log a non-blocking warning and queue that turn into `pending_coach_turns` at session close.
 
 ### 5. Session Close Protocol
 
-**Harness Tier 1 drain:** await pending coach acks for up to 30 seconds or one status ping (a single harness status check of the coach's queue); record any unacknowledged turn range in `pending_coach_turns` as comma-separated `<session_id>:T<start>-T<end>` entries.
+**Harness Tier 1 drain:** await pending coach acks for up to 30 seconds or one status ping (a single harness status check of the coach's queue); merge any unacknowledged turn range into `pending_coach_turns` as comma-separated `<session_id>:T<start>-T<end>` entries.
 
 **Harness Tier 2 close:** run `lingua-coach` once synchronously in session-end mode over the completed `sessions/<session_id>.md` and wait for its ack.
 

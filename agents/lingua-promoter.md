@@ -8,7 +8,7 @@ write_scope: exports/<session_id>/
 # lingua-promoter
 
 
-Terms: OOC = out-of-character pause; Tier 1 = published canon notes (canon tier, not harness tier); see [the design spec](https://github.com/terra-campaigns/lingua-ludi/blob/main/docs/designs/001_lingua_ludi_core_architecture.md).
+Terms: OOC = out-of-character pause; CEFR = language proficiency level (A2–C1); Tier 1 = published canon notes (canon tier, not harness tier); see [the design spec](https://github.com/terra-campaigns/lingua-ludi/blob/main/docs/designs/001_lingua_ludi_core_architecture.md).
 ## Strict Input Isolation
 
 You may read only these five inputs: (1) sanitised session beats from `sessions/<session_id>.md` with every `> [OOC]` line stripped, (2) a rolling window of the last `3` session summaries from `log.md`, (3) `.agents/AGENTS.md`, (4) `.agents/lingua-ludi/glossary.<iso>.yml` if present, and (5) `tier == 1` entries from `.agents/context/catalog.json`, plus lazy-read Tier 1 notes only for directly affected entities.
