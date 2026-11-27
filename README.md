@@ -5,8 +5,9 @@ A zero-Python, setting-agnostic, language-agnostic tabletop RPG skill and subage
 [![Code Licence: MIT](https://img.shields.io/badge/Code_Licence-MIT-yellow.svg)](LICENSE)
 [![Content Licence: CC BY 4.0](https://img.shields.io/badge/Content_Licence-CC_BY_4.0-lightgrey.svg)](LICENSE)
 
-> **Status:** Specification Draft (`Spec 0.2.0`).
-> Core architecture is defined in [docs/designs/001_lingua_ludi_core_architecture.md](docs/designs/001_lingua_ludi_core_architecture.md) and awaits Elephant-Goldfish Model (EGM) review and human sign-off before skills, personas, and language packs are authored.
+> **Status:** Specification Approved (`Spec 0.2.2`, `2026-11-27`).
+> Core architecture is defined in [docs/designs/001_lingua_ludi_core_architecture.md](docs/designs/001_lingua_ludi_core_architecture.md) and passed two zero-context Goldfish EGM review rounds ([docs/reviews/001_lingua_ludi_core_architecture_review.md](docs/reviews/001_lingua_ludi_core_architecture_review.md)).
+> Next milestone: draft and review the `v0.1.0` implementation plan (`docs/plans/001_lingua_ludi_core_architecture_plan.md`).
 
 ---
 
