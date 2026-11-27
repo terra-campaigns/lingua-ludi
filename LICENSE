@@ -1,6 +1,24 @@
-MIT License
+# Licences
 
-Copyright (c) 2026 Terra Campaigns
+Lingua Ludi is an open-source project licensed under a dual-licence structure to cleanly separate software implementation from game mechanics, language packs, prompts, and documentation:
+
+1. **Source Code & Software:** Licensed under the **MIT Licence** (see below).
+2. **Game Mechanics, Language Packs, Prompt Contracts & Documentation:** Licensed under the **Creative Commons Attribution 4.0 International Licence (CC BY 4.0)**.
+
+---
+
+## Attribution & Acknowledgements
+
+This project adapts tabletop roleplaying micro-scene mechanics derived from:
+
+- **24XX SRD** by Jason Tocci (<https://jasontocci.itch.io/24xx>).
+  24XX rules are CC BY 4.0 Jason Tocci.
+
+---
+
+## MIT Licence (Software Code)
+
+Copyright (c) 2026 Estevao Alvarenga and Terra Campaigns Contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +37,22 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+## Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+For game mechanics, language packs, prompt contracts, and documentation:
+
+You are free to:
+
+- **Share** — copy and redistribute the material in any medium or format for any purpose, even commercially.
+- **Adapt** — remix, transform, and build upon the material for any purpose, even commercially.
+
+Under the following terms:
+
+- **Attribution** — You must give appropriate credit, provide a link to the licence, and indicate if changes were made.
+  You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+- **No additional restrictions** — You may not apply legal terms or technological measures that legally restrict others from doing anything the licence permits.
+
+Full legal code is available at: https://creativecommons.org/licenses/by/4.0/legalcode
